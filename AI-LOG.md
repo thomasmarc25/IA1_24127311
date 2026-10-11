@@ -9,11 +9,9 @@
   - Created `.github/workflows/ci.yml` for automated CI test matrix on push/pull request.
   - Created `.cursorrules` and updated `AGENTS.md` with zero-dependency constraints, pre-coding consultation rules, AI activity logging format, and dynamic rule proposal workflow.
 - **What I changed/rejected:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Reviewed rule file updates, gate script, and CI configuration. -->
+  Rejected adding any third-party npm packages or devDependencies (such as ESLint or Jest). Strictly enforced the zero-dependency constraint by requiring standard Node.js built-ins (`node:test`, `node --check`). In `.cursorrules` and `AGENTS.md`, I added an explicit "Never" rule to forbid installing external packages or returning string formatted values.
 - **What I wrote by hand:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Initial prompt specifying harness and interactive logging rules. -->
+  Wrote the initial prompt defining the harness requirements: zero-dependency quality gate script, rules files, and CI matrix workflow. Set up the `"gate": "node scripts/gate.js"` script in `package.json` and specified the interactive logging structure.
 
 ---
 
@@ -26,11 +24,9 @@
   - Added full test suite in `test/cart.test.js` covering the slide worked example (467400), empty cart, free shipping threshold, normal shipping, whole đồng rounding (number type), negative price rejection, and invalid/fractional quantity rejection.
   - Verified quality gate (`npm run gate`) with 100% passing tests (GREEN).
 - **What I changed/rejected:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Verified that the implementation uses Math.round() rather than toFixed(0), and uses built-in node:test without dependencies. -->
+  Checked the output of `cartTotal` to ensure it returned a pure `Number` using `Math.round()`, rejecting any `.toFixed(0)` calls that would return a string. Rejected testing only the happy path: ensured test cases explicitly cover edge cases (`qty: 0`, `qty: 1.5`, `price: -1`, and boundary threshold equality `subtotal === 500000`) so tests assert the specification rather than implementation details.
 - **What I wrote by hand:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Provided specification table from IA#1 instructions and reference slides. -->
+  Constructed the exact specification table and prompt taken from the Session 2 slides. Wrote test assertions testing boundary equality for free shipping and invalid fractional quantities.
 
 ---
 
@@ -43,10 +39,8 @@
   - Validates `price` and `qty` and accumulates `subtotal` concurrently in one pass, avoiding function call frames and garbage collection pressure.
   - Verified quality gate (`npm run gate`) with 7/7 tests passing cleanly.
 - **What I changed/rejected:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Selected Option 2 (indexed loop) over Option 1 (reduce) to eliminate callback invocation overhead. -->
+  Evaluated two optimization options proposed by the assistant. Rejected Option 1 (`items.reduce`) after analyzing callback function overhead, execution context allocations, and V8 JIT inlining limits. Approved Option 2: replaced the two-pass iteration (`for...of` then `reduce`) with a single-pass indexed `for` loop to validate and accumulate simultaneously without callback allocations.
 - **What I wrote by hand:** 
-  <!-- [LEAVE THIS BLANK FOR ME TO FILL] -->
-  <!-- Suggested note: Selected Option 2 after inquiring about callback overhead scenarios. -->
+  Prompted asking for code optimization in `src/cart.js`, analyzed the performance trade-offs between callback closures and indexed loops, and selected Option 2.
 
 ---
