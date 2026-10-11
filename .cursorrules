@@ -1,0 +1,51 @@
+# Project Rules: CSC13008 Web Application Development - Cart Assignment
+
+## Overview & Constraints
+- **Language & Runtime:** Plain Modern JavaScript (ES Modules, `"type": "module"`), Node.js >= 20.
+- **Zero Dependencies:** No third-party packages or npm dependencies allowed (no lodash, no jest, etc.). Use only built-in Node.js modules (`node:test`, `node:assert/strict`, `node:fs`, `node:child_process`).
+- **Target File:** `src/cart.js` exporting `cartTotal(items, options)`.
+- **Test File:** `test/cart.test.js` using Node's native test runner (`node --test`).
+
+## Function Specification (`cartTotal(items, options)`)
+1. **Inputs:**
+   - `items`: Array of objects `[{ name: string, price: number, qty: number }]`
+   - `options`: Object `{ vatRate: number, freeShipFrom: number, shipFee: number }`
+2. **Calculations:**
+   - `subtotal`: Sum of `item.price * item.qty` across all items.
+   - `VAT`: `subtotal * vatRate`.
+   - `shipping`: `0` if `subtotal >= freeShipFrom`, otherwise `shipFee`.
+   - `total`: `subtotal + VAT + shipping`, rounded to the whole đồng (`Math.round(...)`), returned as a `Number`.
+3. **Edge Cases & Validation:**
+   - **Empty cart (`items.length === 0` or empty array):** Must return `0` (no VAT, no shipping applied).
+   - **Invalid inputs:** Throw `RangeError` if:
+     - Any item has `price < 0`
+     - Any item has `qty <= 0` or `qty` is not an integer (`!Number.isInteger(qty)`).
+
+## Interactive & Pre-Coding Rules
+1. **Explain & Ask Before Coding:**
+   - Always explain the proposed solution in clear, intuitive, and easy-to-understand terms before making code changes.
+   - Break down logic step-by-step so the user can easily comprehend what is happening.
+   - Ask for explicit user confirmation before writing or modifying code.
+2. **Dynamic Rule Suggestions:**
+   - If the AI identifies useful rules, conventions, or improvements compatible with the project while working, propose them to the user first.
+   - Never modify or add new rules without obtaining user approval first.
+
+## Automatic Activity Logging (`AI-LOG.md`)
+After producing code or completing a task, record an entry in `AI-LOG.md` following this structure:
+```markdown
+Date: YYYY-MM-DD
+Tool Used: Antigravity / Gemini
+Task: [Brief description of the prompt/task]
+What AI produced: [Summary of the code/artifacts produced by AI]
+What I changed/rejected: [LEAVE THIS BLANK FOR ME TO FILL] (AI can suggest notes here)
+What I wrote by hand: [LEAVE THIS BLANK FOR ME TO FILL] (AI can suggest notes here)
+```
+- Leave the placeholder blank for the user to fill, while providing suggested hints.
+
+## Workflow & TDD Harness
+- **TDD Discipline:**
+  1. **Red:** Write failing unit tests in `test/cart.test.js` covering edge cases, rounding, thresholds, and error handling.
+  2. **Green:** Implement minimal logic in `src/cart.js` to satisfy all test cases.
+  3. **Refactor:** Clean up code, ensure clarity and compliance.
+- **Quality Gate:**
+  - Run `npm run gate` (or `npm test`) to verify zero external dependencies, syntax check, and 100% test pass rate.
